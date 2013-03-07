@@ -31,6 +31,29 @@
 
     loadPage();
 
+// **************** function to reset validation errors ****************
+function unbindElements() {
+        /*jshint validthis:true */
+
+        this.elements.off('.validatrelement');
+    }
+function resetForm() {
+        /*jshint validthis:true */
+
+        unbindElements.call(this);
+        this.firstError = false;
+        this.elements.next('.validatr-message').remove();
+    }
+// **************** function to clear the team input form ****************
+      function clearForm() {
+        $('.teamInput').each(function() {
+          $(this).val("");
+        });
+
+//  reset form validation 
+        resetForm();
+      };
+
 // ****************** max teams alert message *******************
 
     // insert maximum teams into alert
@@ -38,7 +61,7 @@
 
     // click event on create team link
     $("a[href='#teamModal']").on("click", function() {
-
+      //clearForm();
       // show alert message if too many teams
       if (league.length == maxTeams) {
         $("#maxTeamsAlert").show();
@@ -147,6 +170,7 @@
 
       // clear form validation errors
       return false;
+
 
     }); // end click
 
@@ -818,37 +842,37 @@
           <div class="control-group">
             <label class="control-label" for="teamName">Team Name</label>
             <div class="controls">
-              <input id="teamName" type="text" name="teamName" placeholder="Ex. Milwaukee Beers" required="required" data-content="Enter your team name." maxlength="25" />
+              <input id="teamName" class="teamInput" type="text" name="teamName" placeholder="Ex. Milwaukee Beers" required="required" data-content="Enter your team name." maxlength="25" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="firstName">Manager's First Name</label>
             <div class="controls">
-              <input id="firstName" type="text" name="firstName" placeholder="Ex. Joe" required="required" data-content="Enter your manager's first name." maxlength="25" />
+              <input id="firstName" class="teamInput" type="text" name="firstName" placeholder="Ex. Joe" required="required" data-content="Enter your manager's first name." maxlength="25" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="lastName">Manager's Last Name</label>
             <div class="controls">
-              <input id="lastName" type="text" name="lastName" placeholder="Ex. Cooper" required="required" data-content="Enter your manager's last name." maxlength="25" />
+              <input id="lastName" class="teamInput" type="text" name="lastName" placeholder="Ex. Cooper" required="required" data-content="Enter your manager's last name." maxlength="25" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="phone">Phone Number</label>
             <div class="controls">
-              <input id="phone" type="tel" name="phone" placeholder="Ex. 555-555-BEER" required="required" data-content="Enter a 10-digit US phone number." maxlength="14" pattern="\(?(\d{3})\)?[ -.](\d{3})[ -.](\d{4})" />
+              <input id="phone" class="teamInput" type="tel" name="phone" placeholder="Ex. 555-555-BEER" required="required" data-content="Enter a 10-digit US phone number." maxlength="14" pattern="\(?(\d{3})\)?[ -.](\d{3})[ -.](\d{4})" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="sponsor">Team Sponsor</label>
             <div class="controls">
-              <input id="sponsor" type="text" name="sponsor" placeholder="Ex. Milwaukee's Best" required="required" data-content="Enter the name of your team sponsor." maxlength="25" />
+              <input id="sponsor" class="teamInput" type="text" name="sponsor" placeholder="Ex. Milwaukee's Best" required="required" data-content="Enter the name of your team sponsor." maxlength="25" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="zip">Zip Code</label>
             <div class="controls">
-              <input id="zip" type="text" name="zip" placeholder="Ex. 53201" required="required" data-content="Enter a 5 or 9-digit US zip code." pattern="\d{5}(-\d{4})?" maxlength="10" />
+              <input id="zip" class="teamInput" type="text" name="zip" placeholder="Ex. 53201" required="required" data-content="Enter a 5 or 9-digit US zip code." pattern="\d{5}(-\d{4})?" maxlength="10" />
             </div>
           </div>
         </form>
