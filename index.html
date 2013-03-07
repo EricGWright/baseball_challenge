@@ -43,6 +43,16 @@
         });
       };
 
+// **************** function to clear the team input form ****************
+      function clearForm() {
+        $('.teamInput').each(function() {
+          $(this).val("");
+        });
+        $('.validatr-message').each(function() {
+          $(this).remove();
+        });
+      };
+
 // ****************** max teams alert message *******************
 
     // insert maximum teams into alert
