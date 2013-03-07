@@ -31,27 +31,14 @@
 
     loadPage();
 
-// **************** function to reset validation errors ****************
-function unbindElements() {
-        /*jshint validthis:true */
-
-        this.elements.off('.validatrelement');
-    }
-function resetForm() {
-        /*jshint validthis:true */
-
-        unbindElements.call(this);
-        this.firstError = false;
-        this.elements.next('.validatr-message').remove();
-    }
 // **************** function to clear the team input form ****************
       function clearForm() {
         $('.teamInput').each(function() {
           $(this).val("");
         });
-
-//  reset form validation 
-        resetForm();
+        $('.validatr-message').each(function() {
+          $(this).remove();
+        });
       };
 
 // ****************** max teams alert message *******************
@@ -61,12 +48,15 @@ function resetForm() {
 
     // click event on create team link
     $("a[href='#teamModal']").on("click", function() {
-      //clearForm();
+
       // show alert message if too many teams
       if (league.length == maxTeams) {
         $("#maxTeamsAlert").show();
       } else {
-        $("#teamModal").modal("show");        
+        $("#teamModal").modal("show"); 
+        $(".modalClose,.modal-backdrop").click(function() {
+        clearForm();
+      });       
       };
 
     }); // end click
@@ -831,7 +821,7 @@ function resetForm() {
     <!-- team form modal -->
     <div id="teamModal" class="modal hide fade">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close modalClose" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>Team Information</h3>
       </div>
       <div class="modal-body">
@@ -879,7 +869,7 @@ function resetForm() {
       </div>
       <div class="modal-footer">
         <button id="createTeam" class="btn btn-primary" type="submit" aria-hidden="true" form="teamForm">Submit</button>
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn modalClose" data-dismiss="modal" aria-hidden="true">Close</button>
       </div>
     </div><!-- end #teamModal -->
 
