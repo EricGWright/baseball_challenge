@@ -1,3 +1,4 @@
+
 baseball_challenge
 ==================
 
@@ -51,4 +52,13 @@ Additional technical information:<br />
   <li>we tried to maintain an intuitive naming convention where variables are nouns, functions contain verbs, etc.</li>
   <li>we have dedicated functions that refresh our standings and schedule tables, respectively</li>
   <li>we attempted to structure our script by the order in which elements are loaded into the DOM; when no logical ordering was apparent, we prioritized the sections by which elements users would interact with first</li>
+</ul>
+
+Phase 3:<br />
+
+Minor refactoring including:
+
+<ul>
+  <li>Fixed validation bug in which error messages and incorrect input persisted after the form closed</li>
+  <li>Added play again feature to start new season with the same teams</li>
 </ul>
