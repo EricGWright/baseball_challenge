@@ -30,6 +30,18 @@
 // *************** restore game and league data *****************
 
     loadPage();
+    $("#reset").hide();
+    $("#playAgain").hide();
+
+// **************** function to clear the team input form ****************
+      function clearForm() {
+        $('.teamInput').each(function() {
+          $(this).val("");
+        });
+        $('.validatr-message').each(function() {
+          $(this).remove();
+        });
+      };
 
 // ****************** max teams alert message *******************
 
@@ -43,7 +55,10 @@
       if (league.length == maxTeams) {
         $("#maxTeamsAlert").show();
       } else {
-        $("#teamModal").modal("show");        
+        $("#teamModal").modal("show"); 
+        $(".modalClose,.modal-backdrop").click(function() {
+        clearForm();
+      });       
       };
 
     }); // end click
@@ -136,6 +151,7 @@
           // hide create team alert
           $("#createTeamAlert").hide();
 
+
           // check if season can start
           startSeason();
 
@@ -147,6 +163,7 @@
 
       // clear form validation errors
       return false;
+
 
     }); // end click
 
@@ -185,12 +202,44 @@
 
           // restore game and league data
           loadPage();
+          $("#reset").hide();
+          $("#playAgain").hide();
 
         }
       }); // end PUT
 
     }); // end click
 
+
+//************* play again with same teams *********************
+
+ $("#playAgain").click(function() {
+
+      // delete all game data from server
+      for (var i = 0; i < scores.length; i ++) {
+        $.ajax({
+          url: "/backliftapp/game/" + scores[i].id,
+          type: "DELETE",
+          dataType: "JSON"
+        });
+      };
+      for (var i = 0; i < league.length; i ++) {
+        $.ajax({
+          url: "/backliftapp/team/" + league[i].id, 
+          type: "PUT",
+          dataType: "JSON",
+          data:{ wins: 0, losses:0, percentage: 0
+          },
+            success: function (data) {
+           
+            loadPage();
+           
+          }//end success
+        }); // end PUT
+      };//end for
+  });//end click
+
+    
 // ************ make report score links functional *************
 
     // create empty variables
@@ -258,6 +307,8 @@
 
       // hide create team link
       $("#launchTeamModal").hide();
+      $("#reset").show();
+      $("#playAgain").show();
 
       // hide delete buttons
       $(".delete").hide();
@@ -327,6 +378,7 @@
               // show create team alert if league is empty
               if (league.length == 0) {
                 $("#createTeamAlert").show();
+               
               };
 
               // check if season can start
@@ -720,7 +772,8 @@
       <div class="container">
         <ul class="nav">
           <li><a id="launchTeamModal" href="#teamModal">Create Team</a></li>
-          <li><a href="#resetModal" data-toggle="modal">Reset Season</a></li>
+          <li><a id="reset" href="#resetModal" data-toggle="modal">Reset Season</a></li>
+          <li><a id="playAgain" href="#playAgainModal" data-toggle="modal">Play Again</a></li>
         </ul>
         <a id="title" class="brand pull-right" href="#">Beer League Baseball Challenge</a>
       </div>
@@ -807,7 +860,7 @@
     <!-- team form modal -->
     <div id="teamModal" class="modal hide fade">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" class="close modalClose" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3>Team Information</h3>
       </div>
       <div class="modal-body">
@@ -818,44 +871,44 @@
           <div class="control-group">
             <label class="control-label" for="teamName">Team Name</label>
             <div class="controls">
-              <input id="teamName" type="text" name="teamName" placeholder="Ex. Milwaukee Beers" required="required" data-content="Enter your team name." maxlength="25" />
+              <input id="teamName" class="teamInput" type="text" name="teamName" placeholder="Ex. Milwaukee Beers" required="required" data-content="Enter your team name." maxlength="25" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="firstName">Manager's First Name</label>
             <div class="controls">
-              <input id="firstName" type="text" name="firstName" placeholder="Ex. Joe" required="required" data-content="Enter your manager's first name." maxlength="25" />
+              <input id="firstName" class="teamInput" type="text" name="firstName" placeholder="Ex. Joe" required="required" data-content="Enter your manager's first name." maxlength="25" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="lastName">Manager's Last Name</label>
             <div class="controls">
-              <input id="lastName" type="text" name="lastName" placeholder="Ex. Cooper" required="required" data-content="Enter your manager's last name." maxlength="25" />
+              <input id="lastName" class="teamInput" type="text" name="lastName" placeholder="Ex. Cooper" required="required" data-content="Enter your manager's last name." maxlength="25" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="phone">Phone Number</label>
             <div class="controls">
-              <input id="phone" type="tel" name="phone" placeholder="Ex. 555-555-BEER" required="required" data-content="Enter a 10-digit US phone number." maxlength="14" pattern="\(?(\d{3})\)?[ -.](\d{3})[ -.](\d{4})" />
+              <input id="phone" class="teamInput" type="tel" name="phone" placeholder="Ex. 555-555-BEER" required="required" data-content="Enter a 10-digit US phone number." maxlength="14" pattern="\(?(\d{3})\)?[ -.](\d{3})[ -.](\d{4})" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="sponsor">Team Sponsor</label>
             <div class="controls">
-              <input id="sponsor" type="text" name="sponsor" placeholder="Ex. Milwaukee's Best" required="required" data-content="Enter the name of your team sponsor." maxlength="25" />
+              <input id="sponsor" class="teamInput" type="text" name="sponsor" placeholder="Ex. Milwaukee's Best" required="required" data-content="Enter the name of your team sponsor." maxlength="25" />
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="zip">Zip Code</label>
             <div class="controls">
-              <input id="zip" type="text" name="zip" placeholder="Ex. 53201" required="required" data-content="Enter a 5 or 9-digit US zip code." pattern="\d{5}(-\d{4})?" maxlength="10" />
+              <input id="zip" class="teamInput" type="text" name="zip" placeholder="Ex. 53201" required="required" data-content="Enter a 5 or 9-digit US zip code." pattern="\d{5}(-\d{4})?" maxlength="10" />
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button id="createTeam" class="btn btn-primary" type="submit" aria-hidden="true" form="teamForm">Submit</button>
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="btn modalClose" data-dismiss="modal" aria-hidden="true">Close</button>
       </div>
     </div><!-- end #teamModal -->
 
@@ -894,6 +947,7 @@
       </div>
     </div><!-- end #seasonModal -->
 
+
     <!-- reset season modal -->
     <div id="resetModal" class="modal hide fade">
       <div class="modal-body">
@@ -904,6 +958,18 @@
         <button class="btn" data-dismiss="modal" aria-hidden="true">No way, man!</button>
       </div>
     </div><!-- end #resetModal -->
+
+        <!-- play again modal -->
+
+    <div id="playAgainModal" class="modal hide fade">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4>Would you like to start a new season with the same teams?</h4>
+        <p class="text-error">You will not be able to edit any team information once the season begins.</p>
+        <button id="playAgain" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Yes, I'm ready.</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">No, not yet.</button>
+      </div>
+    </div><!--end #playAgain modal-->
 
   </div><!-- end .container -->
 </body>
