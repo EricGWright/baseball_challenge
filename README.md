@@ -61,4 +61,6 @@ Minor refactoring including:
 <ul>
   <li>Fixed validation bug in which error messages and incorrect input persisted after the form closed</li>
   <li>Added play again feature to start new season with the same teams</li>
+  <li>Removed Create Team button after maximum teams alert is shown</li>
+  <li>Removed min and max team global variables</li>
 </ul>
